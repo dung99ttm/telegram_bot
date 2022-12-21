@@ -24,16 +24,16 @@ bot.command('music', async (ctx) => {
   let userId = ctx.message.from?.id?.toString();
   switch (userId) {
     case USER_ID.PHONG:
-      await ctx.reply(`@${await getUserName(ctx, USER_ID.THONG)} @${await getUserName(ctx, USER_ID.LONG)} @${await getUserName(ctx, USER_ID.DUNG)} xin mọt bản nhạc nào`);
+      await ctx.reply(`@${await getUserName(ctx, USER_ID.THONG)} @${await getUserName(ctx, USER_ID.LONG)} @${await getUserName(ctx, USER_ID.DUNG)} xin một bản nhạc nào`);
       break;
     case USER_ID.DUNG:
-      await ctx.reply(`@${await getUserName(ctx, USER_ID.THONG)} @${await getUserName(ctx, USER_ID.PHONG)} @${await getUserName(ctx, USER_ID.LONG)} xin mọt bản nhạc nào`);
+      await ctx.reply(`@${await getUserName(ctx, USER_ID.THONG)} @${await getUserName(ctx, USER_ID.PHONG)} @${await getUserName(ctx, USER_ID.LONG)} xin một bản nhạc nào`);
       break;
     case USER_ID.THONG:
-      await ctx.reply(`@${await getUserName(ctx, USER_ID.DUNG)} @${await getUserName(ctx, USER_ID.PHONG)} @${await getUserName(ctx, USER_ID.LONG)} xin mọt bản nhạc nào`);
+      await ctx.reply(`@${await getUserName(ctx, USER_ID.DUNG)} @${await getUserName(ctx, USER_ID.PHONG)} @${await getUserName(ctx, USER_ID.LONG)} xin một bản nhạc nào`);
       break;
     case USER_ID.LONG:
-      await ctx.reply(`@${await getUserName(ctx, USER_ID.DUNG)} @${await getUserName(ctx, USER_ID.PHONG)} @${await getUserName(ctx, USER_ID.THONG)} xin mọt bản nhạc nào`);
+      await ctx.reply(`@${await getUserName(ctx, USER_ID.DUNG)} @${await getUserName(ctx, USER_ID.PHONG)} @${await getUserName(ctx, USER_ID.THONG)} xin một bản nhạc nào`);
       break;
     default:
       await ctx.reply("Who the fuck are you?");
