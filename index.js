@@ -1,14 +1,22 @@
 const { Telegraf, Input } = require('telegraf');
 const { message } = require('telegraf/filters');
+const { Configuration, OpenAIApi } = require('openai');
 require('dotenv').config()
 
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
 const USER_ID = {
   LONG: "5186919276",
   THONG: "1421003795",
   PHONG: "1471909653",
   DUNG: "1471909653"
 }
+
 const getUserName = async (ctx, userId) => {
   try {
     return (await ctx.getChatMember(userId))?.user?.username;
@@ -19,6 +27,29 @@ const getUserName = async (ctx, userId) => {
 
 bot.start((ctx) => ctx.reply('Welcome'));
 bot.help((ctx) => ctx.reply());
+
+bot.command('image', async (ctx) => {
+  const imageSize = '256x256';
+  
+  try {
+    var prompt = ctx.message.text?.slice(7) + '';
+    const response = await openai.createImage({
+      prompt,
+      n: 1,
+      size: imageSize,
+    });
+
+    const imageUrl = response.data.data[0].url;
+    await ctx.replyWithPhoto(Input.fromURL(imageUrl))
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
+    }
+  }
+});
 
 bot.command('music', async (ctx) => {
   let userId = ctx.message.from?.id?.toString();
@@ -43,17 +74,21 @@ bot.command('music', async (ctx) => {
 
 bot.command('bruce', async (ctx) => {
   await ctx.replyWithPhoto(Input.fromURL("https://scontent.fhan14-1.fna.fbcdn.net/v/t1.18169-9/1982064_301028530058023_6464268228576422604_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=174925&_nc_ohc=zGD77QRlPhoAX_mmnZ1&_nc_ht=scontent.fhan14-1.fna&oh=00_AfAQnX5eqF7IVCVKrbLV83ZyEvBuBnNq2A1m8_8KC0Y-eQ&oe=63CA31A4"))
-})
+});
 
 bot.on(message('text'), async (ctx) => {
   if (ctx.message.from?.id == USER_ID.LONG && (ctx.message?.text?.toLowerCase()?.includes("emi"))) {
+    await ctx.reply(`@${ctx.from.username} nhắc ít thôi`);
+  }
+
+  if (ctx.message?.text?.toLowerCase()?.includes("emi")) {
     await ctx.reply(`@${ctx.from.username} nhắc ít thôi`);
   }
 });
 
 bot.catch((error) => {
   console.log(error);
-})
+});
 
 bot.launch();
 
